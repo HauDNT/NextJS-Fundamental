@@ -1,0 +1,13 @@
+.red {
+    color: red;
+    border: 1px solid red;
+}
+
+.underline {
+    text-decoration: dashed;
+}
+
+.green {
+    color: green;
+    border: 1px solid green;
+}
