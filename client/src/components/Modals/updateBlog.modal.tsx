@@ -41,8 +41,6 @@ function UpdateBlogModal(props: IProps) {
         }
 
         try {
-            console.log(`Current data: ${title} | ${author} | ${content}`);
-            
             fetch(`http://localhost:8000/blogs/${blogId}`, {
                 method: 'PUT',
                 headers: {
