@@ -3,7 +3,7 @@ import Table from 'react-bootstrap/Table';
 
 function BasicTable() {
     return (
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="light">
             <thead>
                 <tr>
                     <th>#</th>

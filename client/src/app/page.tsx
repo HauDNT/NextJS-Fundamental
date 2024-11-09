@@ -1,23 +1,27 @@
 'use client'
+import useSWR from "swr";
 import Link from "next/link";
 import styles from "@/styles/app.module.css";
 import BasicTable from "@/components/BasicTable";
-import { useEffect } from "react";
 
-export default async function Home() {
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch('http://localhost:8000/blogs');
-            const data = await res.json();
-            console.log(">>> Check res: ", data);
-        };
+export default function Home() {
+    const fetcher = (url: string) => fetch(url).then((res) => res.json());
+    
+    const { data, error, isLoading } = useSWR(
+        'http://localhost:8000/blogs',
+        fetcher,
+        {
+            revalidateIfStale: true,
+            revalidateOnFocus: true,
+            revalidateOnReconnect: true,
+        }
+    );
 
-        fetchData();
-    }, [])
-
+    console.log(">>> Check data -->: ", data);
 
     return (
         <>
+            <h1>{data?.length}</h1>
             <ul>
                 <li>
                     <Link href={"/facebook"} className={styles["red"]}>
