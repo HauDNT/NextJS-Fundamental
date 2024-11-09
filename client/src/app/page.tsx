@@ -6,7 +6,7 @@ import BasicTable from "@/components/BasicTable";
 
 export default function Home() {
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
-    
+
     const { data, error, isLoading } = useSWR(
         'http://localhost:8000/blogs',
         fetcher,
@@ -17,11 +17,12 @@ export default function Home() {
         }
     );
 
-    console.log(">>> Check data -->: ", data);
+    // console.log(">>> Check data -->: ", data);
+
+    if (!data) return <>Loading...</>;
 
     return (
         <>
-            <h1>{data?.length}</h1>
             <ul>
                 <li>
                     <Link href={"/facebook"} className={styles["red"]}>
@@ -35,7 +36,7 @@ export default function Home() {
                     <Link href="/google">Google</Link>
                 </li>
             </ul>
-            <BasicTable />
+            <BasicTable blogs={data} />
         </>
     );
 }
