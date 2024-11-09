@@ -1,8 +1,9 @@
 'use client'
+import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface IProps {
     showCreateModal: boolean;
@@ -16,7 +17,28 @@ function CreateBlogModal(props: IProps) {
     const [content, setContent] = useState<string>("");
 
     const handleSubmit = () => {
-        console.log(`Check data: ${title} | ${author} | ${content}`);
+        if (!title || !author || !content) {
+            toast.warning('Empty data is not accept!');
+            return;
+        }
+
+        try {
+            fetch('http://localhost:8000/blogs', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, author, content })
+            })
+                .then(res => res.json())
+                .then(res => {
+                    toast.success('Created success!');
+                    handleCloseModal();
+                });
+        } catch (error) {
+            toast.success('Create error!');
+        };
     };
 
     const handleCloseModal = () => {
