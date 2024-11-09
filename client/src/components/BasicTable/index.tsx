@@ -2,6 +2,7 @@
 import Table from 'react-bootstrap/Table';
 import { Button } from "react-bootstrap";
 import CreateBlogModal from '../Modals/createBlog.modal';
+import UpdateBlogModal from '../Modals/updateBlog.modal';
 import { useState } from 'react';
 
 interface IProps {
@@ -10,7 +11,9 @@ interface IProps {
 
 function BasicTable(props: IProps) {
     const { blogs } = props;
+    const [blogSelectId, setBlogSelectId] = useState<number | undefined>(undefined);
     const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+    const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
 
     return (
         <>
@@ -19,7 +22,7 @@ function BasicTable(props: IProps) {
                 style={{ display: "flex", justifyContent: "space-between" }}
             >
                 <h3>Table Blogs</h3>
-                <Button 
+                <Button
                     variant='secondary'
                     onClick={() => setShowCreateModal(true)}
                 >
@@ -44,7 +47,16 @@ function BasicTable(props: IProps) {
                                 <td>{blog.author}</td>
                                 <td>
                                     <Button variant='primary' className='mx-3'>View</Button>
-                                    <Button variant='success' className='mx-3'>Edit</Button>
+                                    <Button
+                                        variant='success'
+                                        className='mx-3'
+                                        onClick={() => {
+                                            setBlogSelectId(blog.id);
+                                            setShowUpdateModal(true);
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
                                     <Button variant='danger' className='mx-3'>Delete</Button>
                                 </td>
                             </tr>
@@ -56,6 +68,15 @@ function BasicTable(props: IProps) {
                 showCreateModal={showCreateModal}
                 setShowCreateModal={setShowCreateModal}
             />
+            {
+                blogSelectId &&
+                <UpdateBlogModal
+                    blogId={blogSelectId}
+                    showUpdateModal={showUpdateModal}
+                    setShowUpdateModal={setShowUpdateModal}
+                    deleteBlogSelect={setBlogSelectId}
+                />
+            }
         </>
     );
 }

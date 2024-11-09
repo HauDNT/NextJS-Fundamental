@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { mutate } from "swr";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -7,15 +7,32 @@ import Form from 'react-bootstrap/Form';
 import { toast } from 'react-toastify';
 
 interface IProps {
-    showCreateModal: boolean;
-    setShowCreateModal: (value: boolean) => void;
+    blogId: number;
+    showUpdateModal: boolean;
+    setShowUpdateModal: (value: boolean) => void;
+    deleteBlogSelect: (value: undefined) => void;
 }
 
-function CreateBlogModal(props: IProps) {
-    const { showCreateModal, setShowCreateModal } = props;
+function UpdateBlogModal(props: IProps) {
+    const { blogId, showUpdateModal, setShowUpdateModal, deleteBlogSelect } = props;
     const [title, setTitle] = useState<string>("");
     const [author, setAuthor] = useState<string>("");
     const [content, setContent] = useState<string>("");
+
+    const handleLoadBlogData = async () => {
+        try {
+            fetch(`http://localhost:8000/blogs/${blogId}`)
+                .then(res => res.json())
+                .then(res => {
+                    setTitle(res.title);
+                    setAuthor(res.author);
+                    setContent(res.content);
+                });
+        } catch (error) {
+            toast.error('Error when loading blog data');
+            return;
+        }
+    };
 
     const handleSubmit = () => {
         if (!title || !author || !content) {
@@ -24,8 +41,10 @@ function CreateBlogModal(props: IProps) {
         }
 
         try {
-            fetch('http://localhost:8000/blogs', {
-                method: 'POST',
+            console.log(`Current data: ${title} | ${author} | ${content}`);
+            
+            fetch(`http://localhost:8000/blogs/${blogId}`, {
+                method: 'PUT',
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json',
@@ -34,7 +53,7 @@ function CreateBlogModal(props: IProps) {
             })
                 .then(res => res.json())
                 .then(res => {
-                    toast.success('Created success!');
+                    toast.success('Update success!');
                     handleCloseModal();
                     mutate('http://localhost:8000/blogs');
                 });
@@ -47,20 +66,27 @@ function CreateBlogModal(props: IProps) {
         setTitle("");
         setAuthor("");
         setContent("");
-        setShowCreateModal(false);
+        setShowUpdateModal(false);
+        deleteBlogSelect(undefined);
     };
+
+    useEffect(() => {
+        if (blogId) {
+            handleLoadBlogData();
+        }
+    }, []);
 
     return (
         <>
             <Modal
-                show={showCreateModal}
+                show={showUpdateModal}
                 onHide={() => handleCloseModal()}
                 backdrop="static"
                 keyboard={false}
                 size='lg'
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add New A Blog</Modal.Title>
+                    <Modal.Title>Update A Blog</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -89,4 +115,4 @@ function CreateBlogModal(props: IProps) {
     );
 }
 
-export default CreateBlogModal;
+export default UpdateBlogModal;
