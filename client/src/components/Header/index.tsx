@@ -10,7 +10,7 @@ function Header() {
             <Container>
                 <Navbar.Brand>
                     <Link href={"/"} className="navbar-brand">
-                        React-Bootstrap
+                        Next.JS
                     </Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
