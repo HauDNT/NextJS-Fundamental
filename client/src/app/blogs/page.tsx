@@ -9,9 +9,9 @@ const BlogsPage = () => {
         'http://localhost:8000/blogs',
         fetcher,
         {
-            revalidateIfStale: true,
-            revalidateOnFocus: true,
-            revalidateOnReconnect: true,
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
         }
     );
 

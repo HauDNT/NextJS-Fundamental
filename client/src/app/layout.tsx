@@ -23,7 +23,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <Container>
+                <Container style={{height: '100vh', position: 'relative'}}>
                     <Header />
                     {children}
                     <Footer/>
