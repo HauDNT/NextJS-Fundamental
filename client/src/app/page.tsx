@@ -36,7 +36,7 @@ export default function Home() {
                     <Link href="/google">Google</Link>
                 </li>
             </ul>
-            <BasicTable blogs={data} />
+            <BasicTable blogs={data?.sort((a: any, b: any) => b.id - a.id)} />
         </>
     );
 }

@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react';
+import { mutate } from "swr";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -35,6 +36,7 @@ function CreateBlogModal(props: IProps) {
                 .then(res => {
                     toast.success('Created success!');
                     handleCloseModal();
+                    mutate('http://localhost:8000/blogs');
                 });
         } catch (error) {
             toast.success('Create error!');
