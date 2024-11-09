@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import CreateBlogModal from '../Modals/createBlog.modal';
 import UpdateBlogModal from '../Modals/updateBlog.modal';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface IProps {
     blogs: IBlog[]
@@ -46,7 +47,9 @@ function BasicTable(props: IProps) {
                                 <td>{blog.title}</td>
                                 <td>{blog.author}</td>
                                 <td>
-                                    <Button variant='primary' className='mx-3'>View</Button>
+                                    <Link className='btn btn-primary mx-3' href={`/blogs/${blog.id}`}>
+                                        View
+                                    </Link>
                                     <Button
                                         variant='success'
                                         className='mx-3'
